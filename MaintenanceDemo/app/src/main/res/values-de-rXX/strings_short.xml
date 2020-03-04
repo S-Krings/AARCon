@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DruckerDemo</string>
+    <string name="enter_cartridge">Patrone einsetzen</string>
+    <string name="close_lid">Drucker schließen</string>
+    <string name="open_cartridge">Patrone öffnen</string>
+    <string name="open_lid">Drucker öffnen</string>
+    <string name="place_box">Kasten platzieren</string>
+    <string name="remove_cartridge">Patrone entfernen</string>
+    <string name="wait">Warten</string>
+    <string name="success">Erfolg</string>
+    <string name="done">Fertig</string>
+</resources>

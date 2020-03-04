@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MaintenanceDemo</string>
+    <string name="enter_cartridge">Enter Cartridge</string>
+    <string name="close_lid">Close Lid</string>
+    <string name="open_cartridge">Open Cartridge</string>
+    <string name="open_lid">Open Lid</string>
+    <string name="place_box">Place Box</string>
+    <string name="remove_cartridge">Take out Cartridge</string>
+    <string name="wait">Wait</string>
+    <string name="success">Success</string>
+    <string name="done">Done</string>
+</resources>

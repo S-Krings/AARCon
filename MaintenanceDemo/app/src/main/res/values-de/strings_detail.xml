@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DruckerDemo</string>
+    <string name="enter_cartridge">Drücken Sie die neue Druckerpatrone an ihren Platz, bis sie einschnackt.</string>
+    <string name="close_lid">Schließen Sie die Druckerklappe.</string>
+    <string name="open_cartridge">Entfernen Sie die Verpackung der Druckerpatrone. Drehen Sie dann die orangefarbene Verschlusskappe ab.</string>
+    <string name="open_lid">Öffnen Sie die Druckerklappe.</string>
+    <string name="place_box">Platzieren Sie den Kasten über Ihren Drucker.</string>
+    <string name="remove_cartridge">Drücken Sie auf die Lasche der Druckerpatrone, um Sie zu lösen. Nehmen Sie sie dann aus dem Drucker.</string>
+    <string name="wait">Warten Sie ab, bis die Druckerpatrone in Position ist.</string>
+    <string name="success">Sie haben erfolgreich Ihre Druckerpatrone gewechselt.</string>
+    <string name="done">Fertig</string>
+
+</resources>
