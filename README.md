@@ -18,20 +18,41 @@ The AARCon (Android-based framework forAugmented Reality with Context-Awareness)
 - Click "Sync Project with Gradle Files".
 
 ## Usage
-### Components
+### Main Components
 AARCon has three main components, which are responsible for monitoring context and reacting to detected context changes. They will be introduced here.
 #### Condition
 - responsible for obtaining information about the different context features
 - `abstract`, has to be extended with a subclass for each context feature that is supposed to be monitored
 - contains organisational methods for internal communication which the subclasses inherit
-
+- every condition has to register itself to the control class
 #### Rule
 - responsible for executing adaptations (in response to context changes monitored by conditions)
 - `abstract`, has to be extended with a subclass for each kind of action that is supposed to be executed- 
 - contains organisational methods for internal communication which the subclasses inherit
 - execution is dependant of one or more conditions, which have to be added to the rule
-
+- every rule has to register itself to the control class
 #### Control
 - responsible for continous context monitoring and quick reaction to changes
 - registers and observes all rules and conditions and updates them regularly
 - is not supposed to be extended, please use as is
+
+### Extension of Conditions and Rules
+As mentioned above, the `Conditon` and `Rule` classes are abstract and have to be extended with subclasses to use them. In each of the classes, there is one method which has to be overridden whith the code executing the subclass's specific purpose.
+#### Extending the Condition Class
+In the `Condition` class, the `check()` method has to be overridden. Here, the code for checking on one specific context factor has to be entered. It is also advisable to add getters and setters for any objects that are used in the check method. Furthermore, adding a custom constructor can be very helpful to keep the code clean and clutterfree. An example for a `Condition` subclass is the code snippet `DarkCondition`, which detects whether the camera recieves less than 30% lighting.
+```
+public class DarkCondition extends Condition {
+
+    private ArFragment arFragment;
+
+    public DarkCondition(Control control, ArFragment arFragment) {
+        super(control);
+        this.arFragment = arFragment;
+    }
+
+    @Override
+    public boolean check() {
+        return 0.3f > arFragment.getArSceneView().getArFrame().getLightEstimate().getPixelIntensity();
+    }
+}
+```
