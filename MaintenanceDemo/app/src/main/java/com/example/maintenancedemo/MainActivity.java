@@ -31,14 +31,13 @@ import com.example.aarcon.Control;
 import com.example.aarcon.Helpers.NodeToTextHelper;
 import com.example.aarcon.Helpers.TextReloadHelper;
 import com.example.aarcon.Helpers.UsageCountHelper;
-import com.example.aarcon.Rules.CombinedMoveComebackRule;
-import com.example.aarcon.Rules.CombinedTextOutVoiceInRule;
-import com.example.aarcon.Rules.ControlElementsRule;
-import com.example.aarcon.Rules.FaceUserRule;
-import com.example.aarcon.Rules.IndicatorRule;
-import com.example.aarcon.Rules.NodeFontSizeRule;
-import com.example.aarcon.Rules.VisibilityRule;
-import com.example.aarcon.Rules.LowerDetailRule;
+import com.example.aarcon.Rules.ChangeNodePositionTempRule;
+import com.example.aarcon.Rules.ChangeToVoiceInterfaceRule;
+import com.example.aarcon.Rules.ChangeControlElementsRule;
+import com.example.aarcon.Rules.ChangePoseToUserRule;
+import com.example.aarcon.Rules.ChangeIndicatorPositionRule;
+import com.example.aarcon.Rules.ChangeVisibilityRule;
+import com.example.aarcon.Rules.ChangeDetailRule;
 import com.google.ar.core.Anchor;
 import com.google.ar.core.Config;
 import com.google.ar.core.HitResult;
@@ -102,12 +101,11 @@ public class MainActivity extends AppCompatActivity {
     private int appOpened;
 
     private Activity activity = this;
-    private CombinedMoveComebackRule combinedMoveComebackRule;
-    private CombinedTextOutVoiceInRule combinedTextOutVoiceInRule;
-    private FaceUserRule faceUserRule;
+    private ChangeNodePositionTempRule changeNodePositionTempRule;
+    private ChangeToVoiceInterfaceRule changeToVoiceInterfaceRule;
+    private ChangePoseToUserRule changePoseToUserRule;
     private TextReloadHelper textReloadHelper;
     private DistanceToUserBigCondition distanceBigCondition;
-    //private NodeFontSizeRule nodeFontSizeRule;
 
 
     @Override
@@ -176,6 +174,10 @@ public class MainActivity extends AppCompatActivity {
         window.getScaleController().setMinScale(0.4f);
         window.getScaleController().setMaxScale(1f);
 
+        TransformableNode controlNode = new TransformableNode(arFragment.getTransformationSystem());
+        controlNode.setParent(anchorNode);
+        ChangeControlElementsRule changeControlElementsRule = new ChangeControlElementsRule(control, activity, controlNode);
+        changeControlElementsRule.addCondition(new UsedSeldomCondition(control, new UsageCountHelper().getPreferences(activity)));
 
         renderLidMessage();
 
@@ -183,28 +185,29 @@ public class MainActivity extends AppCompatActivity {
         Button button = (Button) l.getChildAt(l.getChildCount()-1);
 
         TrueCondition trueCondition = new TrueCondition(control);
-        combinedMoveComebackRule = new CombinedMoveComebackRule(control,imageView,arFragment,l,window);
-        combinedMoveComebackRule.addCondition(trueCondition);
+        changeNodePositionTempRule = new ChangeNodePositionTempRule(control,imageView,arFragment,l,window);
+        changeNodePositionTempRule.addCondition(trueCondition);
 
-        combinedTextOutVoiceInRule = new CombinedTextOutVoiceInRule(control,activity, NodeToTextHelper.textFromNode(window,l.getChildCount()-2),button);
-        combinedTextOutVoiceInRule.addCondition(new DarkCondition(control,arFragment));
+        changeToVoiceInterfaceRule = new ChangeToVoiceInterfaceRule(control,activity, NodeToTextHelper.textFromNode(window,l.getChildCount()-2),button);
+        changeToVoiceInterfaceRule.addCondition(new DarkCondition(control,arFragment));
 
-        faceUserRule = new FaceUserRule(control,arFragment,window);
-        faceUserRule.addCondition(trueCondition);
+        changePoseToUserRule = new ChangePoseToUserRule(control,arFragment,window);
+        changePoseToUserRule.addCondition(trueCondition);
 
-        LowerDetailRule lowerDetailRule = new LowerDetailRule(control,activity);
-        //nodeFontSizeRule = new NodeFontSizeRule(control,activity,window,10);
+        ChangeDetailRule changeDetailRule = new ChangeDetailRule(control,activity);
         distanceBigCondition = new DistanceToUserBigCondition(control,arFragment,window);
         textReloadHelper = new TextReloadHelper((TextView) l.getChildAt(l.getChildCount()-2),R.string.place_box,activity);
         textReloadHelper.addToOnUpdate(arFragment);
-        lowerDetailRule.setTextReloadHelper(textReloadHelper);
-        lowerDetailRule.addCondition(distanceBigCondition);
-        //nodeFontSizeRule.addCondition(distanceBigCondition);
+        changeDetailRule.setTextReloadHelper(textReloadHelper);
+        changeDetailRule.addCondition(distanceBigCondition);
+
 
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                changeControlElementsRule.deleteConditions();
+                changeControlElementsRule.deactivate();
                 openLid();
             }
         });
@@ -230,27 +233,26 @@ public class MainActivity extends AppCompatActivity {
         reposition(window2,0,0.4f,0);
 
 
-        //renderWaitMessage();
-        renderRemoveMessage();
+        renderWaitMessage();
         LinearLayout l = (LinearLayout) messageLidRenderable.getView();
         Button button = (Button) l.getChildAt(l.getChildCount()-1);
 
         setRuleNodes(window2);
-        combinedMoveComebackRule.setViewGroup(l);
-        combinedTextOutVoiceInRule.setSpeech(NodeToTextHelper.textFromNode(window2,l.getChildCount()-2));
-        combinedTextOutVoiceInRule.setButton(button);
+        changeNodePositionTempRule.setViewGroup(l);
+        changeToVoiceInterfaceRule.setSpeech(NodeToTextHelper.textFromNode(window2,l.getChildCount()-2));
+        changeToVoiceInterfaceRule.setButton(button);
         textReloadHelper.revalue((TextView) l.getChildAt(l.getChildCount()-2),R.string.open_lid);
 
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                takeOut();
+                waiting();
             }
         });
     }
 
-    /*public void waiting(){
+    public void waiting(){
         anchorNode.removeChild(node2);
 
         window3 = new TransformableNode(arFragment.getTransformationSystem()); //window was andy before
@@ -266,9 +268,9 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout l = (LinearLayout) messageLidRenderable.getView();
 
         setRuleNodes(window3);
-        combinedMoveComebackRule.setViewGroup(l);
-        combinedTextOutVoiceInRule.setSpeech(NodeToTextHelper.textFromNode(window3,l.getChildCount()-1));
-        combinedTextOutVoiceInRule.setButton(null);
+        changeNodePositionTempRule.setViewGroup(l);
+        changeToVoiceInterfaceRule.setSpeech(NodeToTextHelper.textFromNode(window3,l.getChildCount()-1));
+        changeToVoiceInterfaceRule.setButton(null);
         textReloadHelper.revalue((TextView) l.getChildAt(l.getChildCount()-2),R.string.wait);
 
 
@@ -286,12 +288,9 @@ public class MainActivity extends AppCompatActivity {
                 message.sendToTarget();
             }
         }, 3*1000);
-    }*/
+    }
 
     public void takeOut(){
-        anchorNode.removeChild(window2);
-        anchorNode.removeChild(node2);
-
         node4 = new TransformableNode(arFragment.getTransformationSystem());
         node4.setParent(anchorNode);
         node4.setRenderable(verticalArrowRenderable);
@@ -303,35 +302,33 @@ public class MainActivity extends AppCompatActivity {
         node4.select();
 
         window4 = new TransformableNode(arFragment.getTransformationSystem()); //window was andy before
-        anchorNode.removeChild(window2);
+        anchorNode.removeChild(window3);
         window4.setParent(anchorNode);
         window4.setRenderable(messageRemoveRenderable); //andyrenderable before
         window4.getScaleController().setMinScale(0.4f);
         window4.getScaleController().setMaxScale(1f);
         reposition(window4, 0, 0.4f, 0);
 
-        //renderOpenMessage();
-        renderInMessage();
-
+        renderOpenMessage();
         LinearLayout l = (LinearLayout) messageRemoveRenderable.getView();
         Button button = (Button) l.getChildAt(l.getChildCount()-1);
         textReloadHelper.revalue((TextView) l.getChildAt(l.getChildCount()-2),R.string.remove_cartridge);
 
 
         setRuleNodes(window4);
-        combinedMoveComebackRule.setViewGroup(l);
-        combinedTextOutVoiceInRule.setSpeech(NodeToTextHelper.textFromNode(window4,l.getChildCount()-2));
-        combinedTextOutVoiceInRule.setButton(button);
+        changeNodePositionTempRule.setViewGroup(l);
+        changeToVoiceInterfaceRule.setSpeech(NodeToTextHelper.textFromNode(window4,l.getChildCount()-2));
+        changeToVoiceInterfaceRule.setButton(button);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                putInCartridge();
+                openCartridge();
             }
         });
     }
 
-    /*public void openCartridge(){
+    public void openCartridge(){
         node5 = new TransformableNode(arFragment.getTransformationSystem());
         anchorNode.removeChild(node4);
         node5.setParent(anchorNode);
@@ -358,35 +355,35 @@ public class MainActivity extends AppCompatActivity {
 
 
         setRuleNodes(window5);
-        combinedMoveComebackRule.setViewGroup(l);
-        combinedTextOutVoiceInRule.setSpeech(NodeToTextHelper.textFromNode(window5,l.getChildCount()-2));
-        combinedTextOutVoiceInRule.setButton(button);
+        changeNodePositionTempRule.setViewGroup(l);
+        changeToVoiceInterfaceRule.setSpeech(NodeToTextHelper.textFromNode(window5,l.getChildCount()-2));
+        changeToVoiceInterfaceRule.setButton(button);
 
         ImageView imageViewCartridge = findViewById(R.id.imageViewCartridge);
         NodeOffScreenCondition nodeOffScreenConditionCartridge = new NodeOffScreenCondition(control,arFragment,node5);
-        IndicatorRule indicatorRule = new IndicatorRule(control, arFragment, imageViewCartridge, node5);
-        indicatorRule.addCondition(nodeOffScreenConditionCartridge);
-        VisibilityRule visibilityRule = new VisibilityRule(control,arFragment,imageViewCartridge);
-        visibilityRule.addCondition(nodeOffScreenConditionCartridge);
+        ChangeIndicatorPositionRule changeIndicatorPositionRule = new ChangeIndicatorPositionRule(control, arFragment, imageViewCartridge, node5);
+        changeIndicatorPositionRule.addCondition(nodeOffScreenConditionCartridge);
+        ChangeVisibilityRule changeVisibilityRule = new ChangeVisibilityRule(control,arFragment,imageViewCartridge);
+        changeVisibilityRule.addCondition(nodeOffScreenConditionCartridge);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                indicatorRule.deactivate();
-                visibilityRule.deactivate();
-                control.deleteRule(indicatorRule);
-                control.deleteRule(visibilityRule);
+                changeIndicatorPositionRule.deactivate();
+                changeVisibilityRule.deactivate();
+                control.deleteRule(changeIndicatorPositionRule);
+                control.deleteRule(changeVisibilityRule);
                 //combinedCartridgeRule.deleteConditions();
                 //control.deleteRule(combinedCartridgeRule);
                 imageViewCartridge.setVisibility(View.INVISIBLE);
                 putInCartridge();
             }
         });
-    }*/
+    }
 
     public void putInCartridge(){
         node6 = new TransformableNode(arFragment.getTransformationSystem());
-        anchorNode.removeChild(node4);
+        anchorNode.removeChild(node5);
         node6.setParent(anchorNode);
         node6.setRenderable(verticalArrowRenderable);
 
@@ -399,7 +396,7 @@ public class MainActivity extends AppCompatActivity {
         node6.select();
 
         window6 = new TransformableNode(arFragment.getTransformationSystem()); //window was andy before
-        anchorNode.removeChild(window4);
+        anchorNode.removeChild(window5);
         window6.setParent(anchorNode);
         window6.setRenderable(messageInRenderable); //andyrenderable before
         window6.getScaleController().setMinScale(0.4f);
@@ -413,9 +410,9 @@ public class MainActivity extends AppCompatActivity {
 
 
         setRuleNodes(window6);
-        combinedMoveComebackRule.setViewGroup(l);
-        combinedTextOutVoiceInRule.setSpeech(NodeToTextHelper.textFromNode(window6,l.getChildCount()-2));
-        combinedTextOutVoiceInRule.setButton(button);
+        changeNodePositionTempRule.setViewGroup(l);
+        changeToVoiceInterfaceRule.setSpeech(NodeToTextHelper.textFromNode(window6,l.getChildCount()-2));
+        changeToVoiceInterfaceRule.setButton(button);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -454,9 +451,9 @@ public class MainActivity extends AppCompatActivity {
 
 
         setRuleNodes(window7);
-        combinedMoveComebackRule.setViewGroup(l);
-        combinedTextOutVoiceInRule.setSpeech(NodeToTextHelper.textFromNode(window7,l.getChildCount()-2));
-        combinedTextOutVoiceInRule.setButton(button);
+        changeNodePositionTempRule.setViewGroup(l);
+        changeToVoiceInterfaceRule.setSpeech(NodeToTextHelper.textFromNode(window7,l.getChildCount()-2));
+        changeToVoiceInterfaceRule.setButton(button);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -483,9 +480,9 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout l = (LinearLayout) successRenderable.getView();
 
         setRuleNodes(window8);
-        combinedMoveComebackRule.setViewGroup(l);
-        combinedTextOutVoiceInRule.setSpeech(NodeToTextHelper.textFromNode(window8,l.getChildCount()-1));
-        combinedTextOutVoiceInRule.setButton(null);
+        changeNodePositionTempRule.setViewGroup(l);
+        changeToVoiceInterfaceRule.setSpeech(NodeToTextHelper.textFromNode(window8,l.getChildCount()-1));
+        changeToVoiceInterfaceRule.setButton(null);
         textReloadHelper.revalue((TextView) l.getChildAt(l.getChildCount()-1),R.string.success);
     }
 
@@ -687,9 +684,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setRuleNodes(TransformableNode node){
-        combinedMoveComebackRule.setTransformableNode(node);
-        faceUserRule.setTransformableNode(node);
+        changeNodePositionTempRule.setTransformableNode(node);
+        changePoseToUserRule.setTransformableNode(node);
         distanceBigCondition.setTransformableNode(node);
-        //nodeFontSizeRule.setTransformableNode(node);
     }
 }
