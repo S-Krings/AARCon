@@ -61,21 +61,6 @@ In the `Rule` class, the `exectue()` method has to be overridden with the code f
 In `Rule` subclasses, the `unexecute()` method can also be overriden optionally. it should contain code for clean-up to reverse the effects of the `execute()` method if necessary, as it is called when the specific rule is not active anymore.
 Both methods are overridden in the `ChangeColorRule`, which changes the color of the object attached to a `TransformableNode`:
 ```
-package com.example.aarcon.Rules;
-
-import android.app.Activity;
-import android.content.Context;
-
-import com.example.aarcon.Control;
-import com.google.ar.sceneform.rendering.Color;
-import com.google.ar.sceneform.rendering.Material;
-import com.google.ar.sceneform.rendering.MaterialFactory;
-import com.google.ar.sceneform.rendering.Renderable;
-import com.google.ar.sceneform.ux.TransformableNode;
-
-import java.util.concurrent.CompletableFuture;
-import java.util.function.Consumer;
-
 public class ChangeColorRule extends Rule {
 
     private Activity activity;
@@ -100,7 +85,7 @@ public class ChangeColorRule extends Rule {
     public void execute() {
         activity.runOnUiThread(new Runnable() { //runOnUiThread to prevent lagging in the main app
             @Override
-            public void run() {					//have to replace renderable to chnge color
+            public void run() {				//have to replace renderable to chnge color
                 renderable = transformableNode.getRenderable();
                 CompletableFuture<Material> materialCompletableFuture =
                         MaterialFactory.makeOpaqueWithColor(activity, color);
