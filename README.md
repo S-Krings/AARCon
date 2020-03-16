@@ -56,3 +56,89 @@ public class DarkCondition extends Condition {
     }
 }
 ```
+#### Extending the Rule Class
+In the `Rule` class, the `exectue()` method has to be overridden with the code for executing a specific adaptation. Again, getters and setters for needed variabes and a custom constructor are advisable. 
+In `Rule` subclasses, the `unexecute()` method can also be overriden optionally. it should contain code for clean-up to reverse the effects of the `execute()` method if necessary, as it is called when the specific rule is not active anymore.
+Both methods are overridden in the `ChangeColorRule`, which changes the color of the object attached to a `TransformableNode`:
+```
+package com.example.aarcon.Rules;
+
+import android.app.Activity;
+import android.content.Context;
+
+import com.example.aarcon.Control;
+import com.google.ar.sceneform.rendering.Color;
+import com.google.ar.sceneform.rendering.Material;
+import com.google.ar.sceneform.rendering.MaterialFactory;
+import com.google.ar.sceneform.rendering.Renderable;
+import com.google.ar.sceneform.ux.TransformableNode;
+
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
+
+public class ChangeColorRule extends Rule {
+
+    private Activity activity;
+    private TransformableNode transformableNode;
+    private Color color = new Color(255,0,0); 	//red by default, user can select different color
+    private Renderable renderable; 				//internal variable to save the original color
+
+    public ChangeColorRule(Control control, Activity activity, TransformableNode transformableNode) {
+        super(control);
+        this.activity = activity;
+        this.transformableNode = transformableNode;
+    }
+
+    public ChangeColorRule(Control control, Activity activity, TransformableNode transformableNode, Color color) {
+        super(control);
+        this.activity = activity;
+        this.transformableNode = transformableNode;
+        this.color = color;
+    }
+
+    @Override
+    public void execute() {
+        activity.runOnUiThread(new Runnable() { //runOnUiThread to prevent lagging in the main app
+            @Override
+            public void run() {					//have to replace renderable to chnge color
+                renderable = transformableNode.getRenderable();
+                CompletableFuture<Material> materialCompletableFuture =
+                        MaterialFactory.makeOpaqueWithColor(activity, color);
+                materialCompletableFuture.thenAccept(new Consumer<Material>() {
+                    @Override
+                    public void accept(Material material) {
+                        Renderable renderable = transformableNode.getRenderable().makeCopy();
+                        renderable.setMaterial(material);
+                        transformableNode.setRenderable(renderable);
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    public void unexecute() {
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (renderable != null){
+                    transformableNode.setRenderable(renderable);
+                }
+            }
+        });
+    }
+
+    public void setContext(Activity activity) {
+        this.activity = activity;
+    }
+
+    public void setTransformableNode(TransformableNode transformableNode) {
+        this.transformableNode = transformableNode;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+}
+
+```
