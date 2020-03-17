@@ -1,9 +1,19 @@
 # AARCon
 The AARCon (Android-based framework forAugmented Reality with Context-Awareness) aims to ease developing context-aware AR applications in Android by offering a base structure for introducing context-aware adaptations as well as a range of preimplemented classes for context monitoring and adaptation purposes. The framework is available as an Android library written in Java for Google's [ARCore](https://developers.google.com/ar) framework.
 ## Contents
-[Installation/Setup]#(Installation/Setup)
+* [Installation and Setup](#installation-and-setup)
+* [Usage](#usage)
+  * [Main Components](#main-components)
+    * [Condition](#condition)
+    * [Rule](#Rule)
+    * [Control](Control)
+  * [Including AARCon in your code](including-aarcon-in-your-code)
+  * [Extension of Conditions and Rules](extension-of-conditions-and-rules)
+    * [Extending the Condition Class](extending-the-condition-class)
+    * [Extension of the Rule Class](extending-the-rule-class)
+* [Demo](demo)
 
-## Installation/Setup
+## Installation and Setup
 - Clone or download AARCon from the master branch's [main page](https://github.com/S-Krings/AARCon) and unpack it if necessary.
 - Add the AARConn library folder (the "aarcon" folder in the downloaded project) to your project
   (e.g. in Android Studio: click "File > New > Import Module", select library directory, then click "Finish").
