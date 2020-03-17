@@ -141,4 +141,5 @@ public class ChangeColorRule extends Rule {
 ## Demo
 The MaitenanceDemo project on this github demonstrates the capabilitier of AARCon.
 For a quick look, a video of the application is included:
+
 ![Video](MaintenanceDemo/maintenance_demo.gif)
