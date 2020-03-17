@@ -60,7 +60,13 @@ Using AARCon to introduce context-awareness to custom applications does not need
   - you can reuse `Condition` subclasses in different `Rule` subclasses
   - in case you want to remove a `Rule` subclass later on, use its `deactivate()` function, so it does not get called by the control on updates anymore
   - you can also delete a `Rule` subclass's `Condition`s using `deleteConditions()` or the single `Condition` subclass's `delete()` methods, but be careful in case you used the `Condition` subclasses for an other `Rule` as well
-
+The following code snippet gives a very basic example AARCon's usage:
+```
+Control control = new Control(1f);
+DistanceToUserBigCondition distanceCondition = new DistanceToUserBigCondition(control, arFragment, transformableNode);
+ChangeDetailRule changeDetailRule = new ChangeDetailRule(control, activity);
+changeDetailRule.addCondition(distanceCondition);
+```
 ### Extension of Conditions and Rules
 As mentioned above, the `Conditon` and `Rule` classes are abstract and have to be extended with subclasses to use them. In each of the classes, there is one method which has to be overridden whith the code executing the subclass's specific purpose.
 #### Extending the Condition Class
@@ -160,5 +166,5 @@ For a quick look, a video of the application is included.
 ### Examples for Context-Awareness in AARCon
 - In the "Open the printer lid" step, an __off-screen indicator__ appears when the window leaves the view of the user. This is done using the `ChangeIndicatorPositionRule` and the `ChangeVisibilityRule` whith the `NodeOffScreenCondition` added to both on the `ImageView` whith the indicator image in it. The effect is visible again in the "Take out cartridge" step.
 - In the "Remove cartridge packaging" step, we see that the message windows allways face the user. This was achieved by using the `ChangePoseToUserRule` whith the `TrueCondition`.
-- In this step, it is also demonstrated that the text detail changes depending on distance (here from "Remove cartridge packaging..." to "Open Cartridge"). This is the `ChangeDetailRule`'s task, here in connection whith the `DistanceToUserCondition`.
+- In this step, it is also demonstrated that the text detail changes depending on distance (here from "Remove cartridge packaging..." to "Open Cartridge"). This is the `ChangeDetailRule`'s task, here in connection whith the `DistanceToUserBigCondition`.
 There are more context-aware functions in AARCon as well as in the application, such as a voice interface and adjustions depending on user experience, which will not be described in deail here, but are included in the framework.
