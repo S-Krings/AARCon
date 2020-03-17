@@ -6,12 +6,12 @@ The AARCon (Android-based framework forAugmented Reality with Context-Awareness)
   * [Main Components](#main-components)
     * [Condition](#condition)
     * [Rule](#Rule)
-    * [Control](Control)
-  * [Including AARCon in your code](including-aarcon-in-your-code)
-  * [Extension of Conditions and Rules](extension-of-conditions-and-rules)
-    * [Extending the Condition Class](extending-the-condition-class)
-    * [Extension of the Rule Class](extending-the-rule-class)
-* [Demo](demo)
+    * [Control](#Control)
+  * [Including AARCon in your code](#including-aarcon-in-your-code)
+  * [Extension of Conditions and Rules](#extension-of-conditions-and-rules)
+    * [Extending the Condition Class](#extending-the-condition-class)
+    * [Extension of the Rule Class](#extending-the-rule-class)
+* [Demo](#demo)
 
 ## Installation and Setup
 - Clone or download AARCon from the master branch's [main page](https://github.com/S-Krings/AARCon) and unpack it if necessary.
