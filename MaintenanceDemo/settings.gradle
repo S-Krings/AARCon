@@ -1,0 +1,2 @@
+include ':app',':aarcon'
+project(':aarcon').projectDir = new File(settingsDir, '../MaintenanceDemo/aarcon')
