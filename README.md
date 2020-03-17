@@ -162,7 +162,7 @@ public class ChangeColorRule extends Rule {
 The MaitenanceDemo project on this github demonstrates the capabilitier of AARCon.
 For a quick look, a video of the application is included.
 ### Video
-![Video](MaintenanceDemo/maintenance_demo.gif)
+![Video](maintenance_demo.gif)
 ### Examples for Context-Awareness in AARCon
 - In the "Open the printer lid" step, an __off-screen indicator__ appears when the window leaves the view of the user. This is done using the `ChangeIndicatorPositionRule` and the `ChangeVisibilityRule` whith the `NodeOffScreenCondition` added to both on the `ImageView` whith the indicator image in it. The effect is visible again in the "Take out cartridge" step.
 - In the "Remove cartridge packaging" step, we see that the message windows allways face the user. This was achieved by using the `ChangePoseToUserRule` whith the `TrueCondition`.
