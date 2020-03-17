@@ -22,12 +22,12 @@ The AARCon (Android-based framework forAugmented Reality with Context-Awareness)
 AARCon has three main components, which are responsible for monitoring context and reacting to detected context changes. They will be introduced here.
 #### Condition
 - responsible for obtaining information about the different context features
-- `abstract`, has to be extended with a subclass for each context feature that is supposed to be monitored
+- `abstract`, has to be extended with a subclass for each context feature that is supposed to be monitored (see "Extension of Conditions and Rules")
 - contains organisational methods for internal communication which the subclasses inherit
 - every condition has to register itself to the control class
 #### Rule
 - responsible for executing adaptations (in response to context changes monitored by conditions)
-- `abstract`, has to be extended with a subclass for each kind of action that is supposed to be executed- 
+- `abstract`, has to be extended with a subclass for each kind of action that is supposed to be executed (see "Extension of Conditions and Rules")
 - contains organisational methods for internal communication which the subclasses inherit
 - execution is dependant of one or more conditions, which have to be added to the rule
 - every rule has to register itself to the control class
@@ -35,6 +35,17 @@ AARCon has three main components, which are responsible for monitoring context a
 - responsible for continous context monitoring and quick reaction to changes
 - registers and observes all rules and conditions and updates them regularly
 - is not supposed to be extended, please use as is
+### Including AARCon in your code
+Using AARCon to introduce context-awareness to custom applications does not need many steps:
+- instanciate a `Control` object (optionally set it's update frequency in seconds)
+- For each action you want to be executed:
+  - instantiate the `Rule` subclass which implements the action
+  - instantiate the `Condition` subclass which checks the condition under which you want to execute your action (if the action depends on multiple conditions, you can also instanciate multiple `Condition` subclasses)
+  - add the `Condition` subclasses to your `Rule` subclass using its `addCondition(Condition condition)` function
+- Remarks:
+  - you can reuse `Condition` subclasses in different `Rule` subclasses
+  - in case you want to remove a `Rule` subclass later on, use its `deactivate()` function, so it does not get called by the control on updates anymore
+  - you can also delete a `Rule` subclass's `Condition`s using `deleteConditions()` or the single `Condition` subclass's `delete()` methods, but be careful in case you used the `Condition` subclasses for an other `Rule` as well
 
 ### Extension of Conditions and Rules
 As mentioned above, the `Conditon` and `Rule` classes are abstract and have to be extended with subclasses to use them. In each of the classes, there is one method which has to be overridden whith the code executing the subclass's specific purpose.
