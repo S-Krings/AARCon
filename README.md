@@ -3,7 +3,7 @@ The AARCon (Android-based framework forAugmented Reality with Context-Awareness)
 
 ## Installation/Setup
 - Clone or download AARCon from the master branch's [main page](https://github.com/S-Krings/AARCon) and unpack it if necessary.
-- Add the AARConn library folder to your project
+- Add the AARConn library folder (the "aarcon" folder in the downloaded project) to your project
   (e.g. in Android Studio: click "File > New > Import Module", select library directory, then click "Finish").
 - List AARCon on top of your project's `settings.gradle` file, as shown here:
   ```
@@ -138,3 +138,7 @@ public class ChangeColorRule extends Rule {
 }
 
 ```
+## Demo
+The MaitenanceDemo project on this github demonstrates the capabilitier of AARCon.
+For a quick look, a video of the application is included:
+[Video](MaintenanceDemo/maintenance_demo.gif)
