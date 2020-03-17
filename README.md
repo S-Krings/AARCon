@@ -63,8 +63,8 @@ Using AARCon to introduce context-awareness to custom applications does not need
 The following code snippet gives a very basic example AARCon's usage:
 ```
 Control control = new Control(1f);
-DistanceToUserBigCondition distanceCondition = new DistanceToUserBigCondition(control, arFragment, transformableNode);
 ChangeDetailRule changeDetailRule = new ChangeDetailRule(control, activity);
+DistanceToUserBigCondition distanceCondition = new DistanceToUserBigCondition(control, arFragment, transformableNode);
 changeDetailRule.addCondition(distanceCondition);
 ```
 ### Extension of Conditions and Rules
