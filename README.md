@@ -11,7 +11,9 @@ The AARCon (Android-based framework forAugmented Reality with Context-Awareness)
   * [Extension of Conditions and Rules](#extension-of-conditions-and-rules)
     * [Extending the Condition Class](#extending-the-condition-class)
     * [Extension of the Rule Class](#extending-the-rule-class)
-* [Demo](#demo)
+* [Demo Application](#demo-application)
+  * [Video](#video)
+  * [Examples for Context-Awareness in AARCon](#examples-for-context-awareness-in-aarcon)
 
 ## Installation and Setup
 - Clone or download AARCon from the master branch's [main page](https://github.com/S-Krings/AARCon) and unpack it if necessary.
@@ -150,8 +152,13 @@ public class ChangeColorRule extends Rule {
 }
 
 ```
-## Demo
+## Demo Application
 The MaitenanceDemo project on this github demonstrates the capabilitier of AARCon.
-For a quick look, a video of the application is included:
-
+For a quick look, a video of the application is included.
+### Video
 ![Video](MaintenanceDemo/maintenance_demo.gif)
+### Examples for Context-Awareness in AARCon
+- In the "Open the printer lid" step, an __off-screen indicator__ appears when the window leaves the view of the user. This is done using the `ChangeIndicatorPositionRule` and the `ChangeVisibilityRule` whith the `NodeOffScreenCondition` added to both on the `ImageView` whith the indicator image in it. The effect is visible again in the "Take out cartridge" step.
+- In the "Remove cartridge packaging" step, we see that the message windows allways face the user. This was achieved by using the `ChangePoseToUserRule` whith the `TrueCondition`.
+- In this step, it is also demonstrated that the text detail changes depending on distance (here from "Remove cartridge packaging..." to "Open Cartridge"). This is the `ChangeDetailRule`'s task, here in connection whith the `DistanceToUserCondition`.
+There are more context-aware functions in AARCon as well as in the application, such as a voice interface and adjustions depending on user experience, which will not be described in deail here, but are included in the framework.
