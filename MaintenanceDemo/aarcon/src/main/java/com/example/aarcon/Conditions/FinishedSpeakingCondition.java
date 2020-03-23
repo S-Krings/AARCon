@@ -4,6 +4,10 @@ import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
 
 import com.example.aarcon.Control;
+
+/**
+ * Condition subclass for checking whether a TextToSpeech has finished listening.
+ */
 public class FinishedSpeakingCondition extends Condition {
 
     private TextToSpeech textToSpeech;

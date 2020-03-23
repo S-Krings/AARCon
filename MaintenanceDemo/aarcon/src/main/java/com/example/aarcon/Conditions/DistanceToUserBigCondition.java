@@ -6,6 +6,9 @@ import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
 
+/**
+ * Condition subclass for checking whether the distance between the user and a TransformableNode is bigger than a threshold.
+ */
 public class DistanceToUserBigCondition extends Condition {
 
     private ArFragment arFragment;

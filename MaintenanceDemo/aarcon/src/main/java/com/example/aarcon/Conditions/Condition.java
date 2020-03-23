@@ -5,6 +5,9 @@ import com.example.aarcon.Control;
 import java.util.Observable;
 import java.util.Observer;
 
+/**
+ * Condition superclass with the main logic which should be inherited by all the Condition subclasses.
+ */
 public abstract class Condition extends Observable {
 
     private boolean state = false;

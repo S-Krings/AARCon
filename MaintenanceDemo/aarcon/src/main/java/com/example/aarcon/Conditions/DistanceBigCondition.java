@@ -2,6 +2,9 @@ package com.example.aarcon.Conditions;
 import com.example.aarcon.Control;
 import com.google.ar.core.Pose;
 
+/**
+ * Condition subclass for checking whether the distance between two Poses is bigger than a threshold.
+ */
 public class DistanceBigCondition extends Condition {
 
     private Pose pose1;

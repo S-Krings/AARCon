@@ -5,7 +5,9 @@ import android.content.Context;
 import com.example.aarcon.Control;
 import com.example.aarcon.Helpers.SystemInfoHelper;
 
-
+/**
+ * Condition subclass for checking whether the system font size is bigger than normal.
+ */
 public class FontBigCondition extends Condition {
     private Context context;
 

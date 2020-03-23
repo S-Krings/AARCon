@@ -6,6 +6,9 @@ import com.example.aarcon.Helpers.LanguageHelper;
 
 import java.util.Locale;
 
+/**
+ * Condition subclass for checking whether the application language matches the system language.
+ */
 public class LanguageNoFitCondition extends Condition {
 
     private Activity activity;

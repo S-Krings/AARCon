@@ -3,6 +3,9 @@ package com.example.aarcon.Conditions;
 import com.example.aarcon.Control;
 import com.google.ar.sceneform.ux.ArFragment;
 
+/**
+ * Condition subclass for checking how much light the camera picks up.
+ */
 public class DarkCondition extends Condition {
 
     private ArFragment arFragment;

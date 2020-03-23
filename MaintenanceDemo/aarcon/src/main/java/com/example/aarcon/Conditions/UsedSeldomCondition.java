@@ -4,6 +4,9 @@ import android.content.SharedPreferences;
 
 import com.example.aarcon.Control;
 
+/**
+ * Condition subclass for checking whether the user has used the application more often than a certain threshold.
+ */
 public class UsedSeldomCondition extends Condition {
     private SharedPreferences preferences;
     private int threshold = 5;

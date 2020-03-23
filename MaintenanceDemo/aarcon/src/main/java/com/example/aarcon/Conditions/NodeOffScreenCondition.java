@@ -7,6 +7,9 @@ import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
 
+/**
+ * Condition subclass for checking whether a TransformableNode is currently visible on the screen.
+ */
 public class NodeOffScreenCondition extends Condition {
 
     private ArFragment arFragment;

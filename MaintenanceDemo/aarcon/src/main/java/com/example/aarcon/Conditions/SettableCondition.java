@@ -2,6 +2,9 @@ package com.example.aarcon.Conditions;
 
 import com.example.aarcon.Control;
 
+/**
+ * Condition subclass whose truth state can be set by the programmer.
+ */
 public class SettableCondition extends Condition {
 
     private boolean truthState = false;
