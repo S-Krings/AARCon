@@ -6,6 +6,9 @@ import android.widget.ImageView;
 import com.example.aarcon.Control;
 import com.google.ar.sceneform.ux.ArFragment;
 
+/**
+ * Rule subclass for changing the visibility of an ImageView (between "visible" and "gone").
+ */
 public class ChangeVisibilityRule extends Rule {
     private ArFragment arFragment;
     private ImageView imageView;

@@ -11,6 +11,9 @@ import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
 
+/**
+ * Rule subclass for rotating an ImageView so its right side always points to a TransformableNode's position on the screen.
+ */
 public class ChangeIndicatorPositionRule extends Rule {
     private ArFragment arFragment;
     private ImageView indicatorView;

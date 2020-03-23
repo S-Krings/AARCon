@@ -2,6 +2,9 @@ package com.example.aarcon.Rules;
 import com.example.aarcon.Control;
 import com.google.ar.sceneform.ux.TransformableNode;
 
+/**
+ * Rule subclass for changing the size of a TransformableNode.
+ */
 public class ChangeObjectSizeRule extends Rule {
 
     private TransformableNode node;

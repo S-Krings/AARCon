@@ -15,6 +15,9 @@ import com.example.aarcon.R;
 
 import java.util.Locale;
 
+/**
+ * Rule subclass for activating the voice recognition by google.
+ */
 public class ChangeToVoiceRecognitionRule extends Rule {
     private Activity activity;
     private Button button;

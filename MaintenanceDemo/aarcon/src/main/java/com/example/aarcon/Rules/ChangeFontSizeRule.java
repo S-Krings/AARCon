@@ -5,6 +5,9 @@ import android.widget.TextView;
 
 import com.example.aarcon.Control;
 
+/**
+ * Rule subclass for changing the font size of a TextView.
+ */
 public class ChangeFontSizeRule extends Rule {
     private Activity activity;
     private TextView textView;

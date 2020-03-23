@@ -13,6 +13,9 @@ import com.google.ar.sceneform.ux.TransformableNode;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
+/**
+ * Rule subclass for  changing the transparency of a TransformableNode.
+ */
 public class ChangeTransparencyRule extends Rule {
 
     private Activity activity;

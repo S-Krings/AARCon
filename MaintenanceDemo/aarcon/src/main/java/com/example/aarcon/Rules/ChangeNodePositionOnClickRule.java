@@ -6,6 +6,9 @@ import com.example.aarcon.Control;
 import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.ux.TransformableNode;
 
+/**
+ * Rule subclass for adding an OnClickListener to a View which, when touched moves a TransformableNode to a specified position.
+ */
 public class ChangeNodePositionOnClickRule extends Rule {
 
     private View view;

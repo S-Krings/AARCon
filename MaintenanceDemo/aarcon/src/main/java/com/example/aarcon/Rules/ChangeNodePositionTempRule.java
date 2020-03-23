@@ -9,6 +9,9 @@ import com.example.aarcon.Control;
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
 
+/**
+ * Rule subclass combining the ChangeIndicatorPositionRule, the ChangeLayoutMoveNodeRule, the ChangeNodePositionOnClickRule and ChangeVisibilityRule to make it possible to teleport a ViewRenderable one meter to the right by clicking an automatically added arrow and get it back by clicking the off-screen-indicator appearing on its disappearance.
+ */
 public class ChangeNodePositionTempRule extends Rule {
 
     private ImageView indicatorView;

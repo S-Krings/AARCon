@@ -8,6 +8,9 @@ import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
 
+/**
+ * Rule subclass for rotating a TransformableNode to always face the user.
+ */
 public class ChangePoseToUserRule extends Rule {
 
     private ArFragment arFragment;

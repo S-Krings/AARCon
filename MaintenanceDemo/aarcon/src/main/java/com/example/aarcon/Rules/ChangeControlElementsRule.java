@@ -11,6 +11,9 @@ import com.google.ar.sceneform.ux.TransformableNode;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * Rule subclass for adding 3D illustrations on how to move, rotate and scale 3D elements.
+ */
 public class ChangeControlElementsRule extends Rule{
 
     private Handler handler;

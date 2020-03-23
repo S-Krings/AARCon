@@ -8,6 +8,9 @@ import com.example.aarcon.Helpers.TextReloadHelper;
 
 import java.util.Locale;
 
+/**
+ * Rule subclass for changng the language f the application and reloading ViewRenderables for the changes to appear.
+ */
 public class ChangeLanguageRule extends Rule {
     //TODO have to reload renderable for changes to take effect
 

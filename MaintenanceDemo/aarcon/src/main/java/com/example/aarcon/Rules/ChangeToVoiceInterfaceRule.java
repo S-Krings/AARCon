@@ -10,6 +10,9 @@ import com.example.aarcon.Control;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * Rule subclass for activating a voice interface by using a combination of the ChangeAudioRule and the ChangeToVoiceRecognitionRule.
+ */
 public class ChangeToVoiceInterfaceRule extends Rule {
 
     private Activity activity;

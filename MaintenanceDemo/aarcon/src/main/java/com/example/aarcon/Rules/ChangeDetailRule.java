@@ -6,6 +6,9 @@ import com.example.aarcon.Control;
 import com.example.aarcon.Helpers.LanguageHelper;
 import com.example.aarcon.Helpers.TextReloadHelper;
 
+/**
+ * Rule subclass for lowering the detail level of texts in renderables. Makes use of the TextReloadHelper class which needs a resource file with the low-detail texts.
+ */
 public class ChangeDetailRule extends Rule {
     //TODO have to reload renderable for changes to take effect
 

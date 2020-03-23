@@ -9,6 +9,9 @@ import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
 
+/**
+ * Rule subclass for adding an arrow to any ViewRenderable, which, when clicked, teleports it one meter to the right.
+ */
 public class ChangeLayoutMoveNodeRule extends Rule{
 
     private ArFragment arFragment;

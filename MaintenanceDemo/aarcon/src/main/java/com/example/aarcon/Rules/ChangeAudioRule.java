@@ -14,6 +14,9 @@ import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * Rule subclass for enabling audio output
+ */
 public class ChangeAudioRule extends Rule{
 
     private Activity activity;

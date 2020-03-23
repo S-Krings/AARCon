@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
+/**
+ * Rule superclass with the main logic which should be inherited by all the Rule subclasses.
+ */
 public abstract class Rule extends Observable {
 
     Control control;
