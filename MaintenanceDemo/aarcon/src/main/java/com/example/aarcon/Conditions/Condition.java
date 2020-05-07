@@ -27,12 +27,12 @@ public abstract class Condition extends Observable {
 
 
     /**
-     * Method to be called by Rule: checks if condition is fulfilled and notifies the observer
+     * Method to be called by Action: checks if condition is fulfilled and notifies the observer
      * @return whether the condition is fulfilled
      */
     public final boolean evaluate() {
         boolean b = check();
-        //TODO System.out.println("############# Evaluate Rule "+this.getClass()+", state is: "+b);//TODO
+        //TODO System.out.println("############# Evaluate Action "+this.getClass()+", state is: "+b);//TODO
         if (b!=state){
             state = b;
             setChanged();

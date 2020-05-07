@@ -1,7 +1,6 @@
 package com.example.aarcon;
 
-import com.example.aarcon.Conditions.Condition;
-import com.example.aarcon.Rules.Rule;
+import com.example.aarcon.Actions.Action;
 
 import java.util.ArrayList;
 import java.util.Observable;
@@ -11,7 +10,7 @@ import java.util.TimerTask;
 
 public class Control implements Observer {
     private float updateFrequency = 1f;
-    private ArrayList<Rule> rules = new ArrayList<>();
+    private ArrayList<Action> actions = new ArrayList<>();
 
     public Control(){
         Timer timer = new Timer();
@@ -37,31 +36,31 @@ public class Control implements Observer {
     @Override
     public void update(Observable observable, Object arg) {
         for(int prio = 3; prio>0; prio--) {
-            for (int i = 0; i < rules.size(); i++) {
-                if(rules.get(i).getPriority() == prio) {
-                    rules.get(i).evaluate();
+            for (int i = 0; i < actions.size(); i++) {
+                if(actions.get(i).getPriority() == prio) {
+                    actions.get(i).evaluate();
                 }
             }
         }
         /*System.out.println("---Update");
-        for (int i = 0;i<rules.size();i++){
-            System.out.println(rules.get(i).getClass().toString());
+        for (int i = 0;i<actions.size();i++){
+            System.out.println(actions.get(i).getClass().toString());
         }
         System.out.println("---Update end");*/
     }
 
 
-    public void registerRule(Rule rule){
-        rules.add(rule);
+    public void registerAction(Action action){
+        actions.add(action);
     }
 
-    public void deleteRule(Rule rule){
-        if(rules.contains(rule)) {
-            rules.remove(rule);
+    public void deleteAction(Action action){
+        if(actions.contains(action)) {
+            actions.remove(action);
         }
     }
-    public ArrayList<Rule> getRules(){
-        return rules;
+    public ArrayList<Action> getActions(){
+        return actions;
     }
 
     public float getUpdateFrequency() {

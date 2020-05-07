@@ -22,6 +22,11 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.aarcon.Actions.ChangeControlElementsAction;
+import com.example.aarcon.Actions.ChangeIndicatorPositionAction;
+import com.example.aarcon.Actions.ChangeNodePositionTempAction;
+import com.example.aarcon.Actions.ChangePoseToUserAction;
+import com.example.aarcon.Actions.ChangeToVoiceInterfaceAction;
 import com.example.aarcon.Conditions.DarkCondition;
 import com.example.aarcon.Conditions.DistanceToUserBigCondition;
 import com.example.aarcon.Conditions.NodeOffScreenCondition;
@@ -31,13 +36,8 @@ import com.example.aarcon.Control;
 import com.example.aarcon.Helpers.NodeToTextHelper;
 import com.example.aarcon.Helpers.TextReloadHelper;
 import com.example.aarcon.Helpers.UsageCountHelper;
-import com.example.aarcon.Rules.ChangeNodePositionTempRule;
-import com.example.aarcon.Rules.ChangeToVoiceInterfaceRule;
-import com.example.aarcon.Rules.ChangeControlElementsRule;
-import com.example.aarcon.Rules.ChangePoseToUserRule;
-import com.example.aarcon.Rules.ChangeIndicatorPositionRule;
-import com.example.aarcon.Rules.ChangeVisibilityRule;
-import com.example.aarcon.Rules.ChangeDetailRule;
+import com.example.aarcon.Actions.ChangeVisibilityAction;
+import com.example.aarcon.Actions.ChangeDetailAction;
 import com.google.ar.core.Anchor;
 import com.google.ar.core.Config;
 import com.google.ar.core.HitResult;
@@ -101,9 +101,9 @@ public class MainActivity extends AppCompatActivity {
     private int appOpened;
 
     private Activity activity = this;
-    private ChangeNodePositionTempRule changeNodePositionTempRule;
-    private ChangeToVoiceInterfaceRule changeToVoiceInterfaceRule;
-    private ChangePoseToUserRule changePoseToUserRule;
+    private ChangeNodePositionTempAction changeNodePositionTempAction;
+    private ChangeToVoiceInterfaceAction changeToVoiceInterfaceAction;
+    private ChangePoseToUserAction changePoseToUserAction;
     private TextReloadHelper textReloadHelper;
     private DistanceToUserBigCondition distanceBigCondition;
 
@@ -176,8 +176,8 @@ public class MainActivity extends AppCompatActivity {
 
         TransformableNode controlNode = new TransformableNode(arFragment.getTransformationSystem());
         controlNode.setParent(anchorNode);
-        ChangeControlElementsRule changeControlElementsRule = new ChangeControlElementsRule(control, activity, controlNode);
-        changeControlElementsRule.addCondition(new UsedSeldomCondition(control, new UsageCountHelper().getPreferences(activity)));
+        ChangeControlElementsAction changeControlElementsAction = new ChangeControlElementsAction(control, activity, controlNode);
+        changeControlElementsAction.addCondition(new UsedSeldomCondition(control, new UsageCountHelper().getPreferences(activity)));
 
         renderLidMessage();
 
@@ -185,29 +185,29 @@ public class MainActivity extends AppCompatActivity {
         Button button = (Button) l.getChildAt(l.getChildCount()-1);
 
         TrueCondition trueCondition = new TrueCondition(control);
-        changeNodePositionTempRule = new ChangeNodePositionTempRule(control,imageView,arFragment,l,window);
-        changeNodePositionTempRule.addCondition(trueCondition);
+        changeNodePositionTempAction = new ChangeNodePositionTempAction(control,imageView,arFragment,l,window);
+        changeNodePositionTempAction.addCondition(trueCondition);
 
-        changeToVoiceInterfaceRule = new ChangeToVoiceInterfaceRule(control,activity, NodeToTextHelper.textFromNode(window,l.getChildCount()-2),button);
-        changeToVoiceInterfaceRule.addCondition(new DarkCondition(control,arFragment));
+        changeToVoiceInterfaceAction = new ChangeToVoiceInterfaceAction(control,activity, NodeToTextHelper.textFromNode(window,l.getChildCount()-2),button);
+        changeToVoiceInterfaceAction.addCondition(new DarkCondition(control,arFragment));
 
-        changePoseToUserRule = new ChangePoseToUserRule(control,arFragment,window);
-        changePoseToUserRule.addCondition(trueCondition);
+        changePoseToUserAction = new ChangePoseToUserAction(control,arFragment,window);
+        changePoseToUserAction.addCondition(trueCondition);
 
-        ChangeDetailRule changeDetailRule = new ChangeDetailRule(control,activity);
+        ChangeDetailAction changeDetailAction = new ChangeDetailAction(control,activity);
         distanceBigCondition = new DistanceToUserBigCondition(control,arFragment,window);
         textReloadHelper = new TextReloadHelper((TextView) l.getChildAt(l.getChildCount()-2),R.string.place_box,activity);
         textReloadHelper.addToOnUpdate(arFragment);
-        changeDetailRule.setTextReloadHelper(textReloadHelper);
-        changeDetailRule.addCondition(distanceBigCondition);
+        changeDetailAction.setTextReloadHelper(textReloadHelper);
+        changeDetailAction.addCondition(distanceBigCondition);
 
 
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                changeControlElementsRule.deleteConditions();
-                changeControlElementsRule.deactivate();
+                changeControlElementsAction.deleteConditions();
+                changeControlElementsAction.deactivate();
                 openLid();
             }
         });
@@ -237,10 +237,10 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout l = (LinearLayout) messageLidRenderable.getView();
         Button button = (Button) l.getChildAt(l.getChildCount()-1);
 
-        setRuleNodes(window2);
-        changeNodePositionTempRule.setViewGroup(l);
-        changeToVoiceInterfaceRule.setSpeech(NodeToTextHelper.textFromNode(window2,l.getChildCount()-2));
-        changeToVoiceInterfaceRule.setButton(button);
+        setActionNodes(window2);
+        changeNodePositionTempAction.setViewGroup(l);
+        changeToVoiceInterfaceAction.setSpeech(NodeToTextHelper.textFromNode(window2,l.getChildCount()-2));
+        changeToVoiceInterfaceAction.setButton(button);
         textReloadHelper.revalue((TextView) l.getChildAt(l.getChildCount()-2),R.string.open_lid);
 
 
@@ -267,10 +267,10 @@ public class MainActivity extends AppCompatActivity {
 
         LinearLayout l = (LinearLayout) messageLidRenderable.getView();
 
-        setRuleNodes(window3);
-        changeNodePositionTempRule.setViewGroup(l);
-        changeToVoiceInterfaceRule.setSpeech(NodeToTextHelper.textFromNode(window3,l.getChildCount()-1));
-        changeToVoiceInterfaceRule.setButton(null);
+        setActionNodes(window3);
+        changeNodePositionTempAction.setViewGroup(l);
+        changeToVoiceInterfaceAction.setSpeech(NodeToTextHelper.textFromNode(window3,l.getChildCount()-1));
+        changeToVoiceInterfaceAction.setButton(null);
         textReloadHelper.revalue((TextView) l.getChildAt(l.getChildCount()-2),R.string.wait);
 
 
@@ -315,10 +315,10 @@ public class MainActivity extends AppCompatActivity {
         textReloadHelper.revalue((TextView) l.getChildAt(l.getChildCount()-2),R.string.remove_cartridge);
 
 
-        setRuleNodes(window4);
-        changeNodePositionTempRule.setViewGroup(l);
-        changeToVoiceInterfaceRule.setSpeech(NodeToTextHelper.textFromNode(window4,l.getChildCount()-2));
-        changeToVoiceInterfaceRule.setButton(button);
+        setActionNodes(window4);
+        changeNodePositionTempAction.setViewGroup(l);
+        changeToVoiceInterfaceAction.setSpeech(NodeToTextHelper.textFromNode(window4,l.getChildCount()-2));
+        changeToVoiceInterfaceAction.setButton(button);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -354,27 +354,27 @@ public class MainActivity extends AppCompatActivity {
         textReloadHelper.revalue((TextView) l.getChildAt(l.getChildCount()-2),R.string.open_cartridge);
 
 
-        setRuleNodes(window5);
-        changeNodePositionTempRule.setViewGroup(l);
-        changeToVoiceInterfaceRule.setSpeech(NodeToTextHelper.textFromNode(window5,l.getChildCount()-2));
-        changeToVoiceInterfaceRule.setButton(button);
+        setActionNodes(window5);
+        changeNodePositionTempAction.setViewGroup(l);
+        changeToVoiceInterfaceAction.setSpeech(NodeToTextHelper.textFromNode(window5,l.getChildCount()-2));
+        changeToVoiceInterfaceAction.setButton(button);
 
         ImageView imageViewCartridge = findViewById(R.id.imageViewCartridge);
         NodeOffScreenCondition nodeOffScreenConditionCartridge = new NodeOffScreenCondition(control,arFragment,node5);
-        ChangeIndicatorPositionRule changeIndicatorPositionRule = new ChangeIndicatorPositionRule(control, arFragment, imageViewCartridge, node5);
-        changeIndicatorPositionRule.addCondition(nodeOffScreenConditionCartridge);
-        ChangeVisibilityRule changeVisibilityRule = new ChangeVisibilityRule(control,arFragment,imageViewCartridge);
-        changeVisibilityRule.addCondition(nodeOffScreenConditionCartridge);
+        ChangeIndicatorPositionAction changeIndicatorPositionAction = new ChangeIndicatorPositionAction(control, arFragment, imageViewCartridge, node5);
+        changeIndicatorPositionAction.addCondition(nodeOffScreenConditionCartridge);
+        ChangeVisibilityAction changeVisibilityAction = new ChangeVisibilityAction(control,arFragment,imageViewCartridge);
+        changeVisibilityAction.addCondition(nodeOffScreenConditionCartridge);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                changeIndicatorPositionRule.deactivate();
-                changeVisibilityRule.deactivate();
-                control.deleteRule(changeIndicatorPositionRule);
-                control.deleteRule(changeVisibilityRule);
-                //combinedCartridgeRule.deleteConditions();
-                //control.deleteRule(combinedCartridgeRule);
+                changeIndicatorPositionAction.deactivate();
+                changeVisibilityAction.deactivate();
+                control.deleteAction(changeIndicatorPositionAction);
+                control.deleteAction(changeVisibilityAction);
+                //combinedCartridgeAction.deleteConditions();
+                //control.deleteAction(combinedCartridgeAction);
                 imageViewCartridge.setVisibility(View.INVISIBLE);
                 putInCartridge();
             }
@@ -409,10 +409,10 @@ public class MainActivity extends AppCompatActivity {
         textReloadHelper.revalue((TextView) l.getChildAt(l.getChildCount()-2),R.string.enter_cartridge);
 
 
-        setRuleNodes(window6);
-        changeNodePositionTempRule.setViewGroup(l);
-        changeToVoiceInterfaceRule.setSpeech(NodeToTextHelper.textFromNode(window6,l.getChildCount()-2));
-        changeToVoiceInterfaceRule.setButton(button);
+        setActionNodes(window6);
+        changeNodePositionTempAction.setViewGroup(l);
+        changeToVoiceInterfaceAction.setSpeech(NodeToTextHelper.textFromNode(window6,l.getChildCount()-2));
+        changeToVoiceInterfaceAction.setButton(button);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -450,10 +450,10 @@ public class MainActivity extends AppCompatActivity {
         textReloadHelper.revalue((TextView) l.getChildAt(l.getChildCount()-2), R.string.close_lid);
 
 
-        setRuleNodes(window7);
-        changeNodePositionTempRule.setViewGroup(l);
-        changeToVoiceInterfaceRule.setSpeech(NodeToTextHelper.textFromNode(window7,l.getChildCount()-2));
-        changeToVoiceInterfaceRule.setButton(button);
+        setActionNodes(window7);
+        changeNodePositionTempAction.setViewGroup(l);
+        changeToVoiceInterfaceAction.setSpeech(NodeToTextHelper.textFromNode(window7,l.getChildCount()-2));
+        changeToVoiceInterfaceAction.setButton(button);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -479,10 +479,10 @@ public class MainActivity extends AppCompatActivity {
 
         LinearLayout l = (LinearLayout) successRenderable.getView();
 
-        setRuleNodes(window8);
-        changeNodePositionTempRule.setViewGroup(l);
-        changeToVoiceInterfaceRule.setSpeech(NodeToTextHelper.textFromNode(window8,l.getChildCount()-1));
-        changeToVoiceInterfaceRule.setButton(null);
+        setActionNodes(window8);
+        changeNodePositionTempAction.setViewGroup(l);
+        changeToVoiceInterfaceAction.setSpeech(NodeToTextHelper.textFromNode(window8,l.getChildCount()-1));
+        changeToVoiceInterfaceAction.setButton(null);
         textReloadHelper.revalue((TextView) l.getChildAt(l.getChildCount()-1),R.string.success);
     }
 
@@ -683,9 +683,9 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    private void setRuleNodes(TransformableNode node){
-        changeNodePositionTempRule.setTransformableNode(node);
-        changePoseToUserRule.setTransformableNode(node);
+    private void setActionNodes(TransformableNode node){
+        changeNodePositionTempAction.setTransformableNode(node);
+        changePoseToUserAction.setTransformableNode(node);
         distanceBigCondition.setTransformableNode(node);
     }
 }
